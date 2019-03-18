@@ -26,7 +26,7 @@ class BlogIndex extends React.Component {
                   marginBottom: `1rem`,
                 }}
               >
-                <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
+                <Link style={{ boxShadow: `none` }} to={`/blog/${node.fields.slug}`}>
                   {title}
                 </Link>
               </h3>
