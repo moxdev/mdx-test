@@ -9,8 +9,10 @@ const { createFilePath } = require(`gatsby-source-filesystem`)
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
-
-  const blogPost = path.resolve(`./src/templates/blog-post.js`)
+  const blogPostTemplate = path.resolve(`./src/templates/blog-post.js`)
+  // Query for markdown nodes to use in creating pages.
+  // You can query for whatever data you want to create pages for e.g.
+  // products, portfolio items, landing pages, etc.
   return graphql(
     `
       {
@@ -56,7 +58,7 @@ exports.createPages = ({ graphql, actions }) => {
 
       createPage({
         path: `/blog${post.node.frontmatter.slug}`,
-        component: blogPost,
+        component: blogPostTemplate,
         context: {
           slug: post.node.fields.slug,
           previous,
@@ -67,11 +69,14 @@ exports.createPages = ({ graphql, actions }) => {
   })
 }
 
+// This generates a node field 'slug' with a value of the file path
+// Could use for automaticlaly creating urls from a file path
+
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `Mdx`) {
-    const value = createFilePath({ node, getNode })
+    const value = createFilePath({ node, getNode, basePath:`posts` })
     createNodeField({
       name: `slug`,
       node,
