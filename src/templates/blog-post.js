@@ -34,6 +34,15 @@ class BlogPostTemplate extends React.Component {
         >
           {author}
         </p>
+        <p
+          style={{
+            display: `block`,
+            marginBottom: `1rem`,
+            marginTop: `1rem`,
+          }}
+        >
+          {post.frontmatter.tags}
+        </p>
         <MDXRenderer>{post.code.body}</MDXRenderer>
         <hr
           style={{
@@ -86,6 +95,7 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        tags
       }
       code {
         body
