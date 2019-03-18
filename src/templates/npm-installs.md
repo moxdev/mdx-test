@@ -1,0 +1,1 @@
+npm i @mdx-js/mdx @mdx-js/tag gatsby-mdx gatsby-plugin-typography gatsby-remark-copy-linked-files gatsby-remark-images gatsby-remark-responsive-iframe gatsby-remark-smartypants gatsby-transformer-remark mdx-utils prism-react-renderer react-live typography

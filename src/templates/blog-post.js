@@ -9,6 +9,7 @@ class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.mdx
     const siteTitle = this.props.data.site.siteMetadata.title
+    const author = this.props.data.site.siteMetadata.author
     const { previous, next } = this.props.pageContext
 
     return (
@@ -23,6 +24,15 @@ class BlogPostTemplate extends React.Component {
           }}
         >
           {post.frontmatter.date}
+        </p>
+        <p
+          style={{
+            display: `block`,
+            marginBottom: `1rem`,
+            marginTop: `1rem`,
+          }}
+        >
+          {author}
         </p>
         <MDXRenderer>{post.code.body}</MDXRenderer>
         <hr
