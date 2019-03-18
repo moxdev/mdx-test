@@ -24,17 +24,14 @@ exports.createPages = ({ graphql, actions }) => {
             node {
               id
               fields {
-                slug
+                filePath
+                date
+                published
               }
               frontmatter {
                 title
                 date
                 slug
-                draft
-                template
-                category
-                tags
-                description
               }
               code {
                 scope
@@ -60,7 +57,7 @@ exports.createPages = ({ graphql, actions }) => {
         path: `/blog${post.node.frontmatter.slug}`,
         component: blogPostTemplate,
         context: {
-          slug: post.node.fields.slug,
+          filePath: post.node.fields.filePath,
           previous,
           next,
         },
@@ -76,11 +73,36 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `Mdx`) {
-    const value = createFilePath({ node, getNode, basePath:`posts` })
+    const pathToPost = createFilePath({ node, getNode, basePath:`posts` })
+
+    createNodeField({
+      name: `id`,
+      node,
+      value: node.id,
+    })
+
+    createNodeField({
+      name: `filePath`,
+      node,
+      value: pathToPost,
+    })
+
     createNodeField({
       name: `slug`,
       node,
-      value,
+      value: `/blog${node.frontmatter.slug}`,
+    })
+
+    createNodeField({
+      name: `published`,
+      node,
+      value: node.frontmatter.published,
+    })
+
+    createNodeField({
+      name: `date`,
+      node,
+      value: node.frontmatter.date ? node.frontmatter.date.split(' ')[0] : '',
     })
   }
 }
