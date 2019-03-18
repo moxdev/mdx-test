@@ -14,8 +14,8 @@ class BlogPostTemplate extends React.Component {
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
-        <SEO title={post.frontmatter.title} description={post.excerpt} />
-        <h1>{post.frontmatter.title}</h1>
+        <SEO title={post.fields.title} description={post.excerpt} />
+        <h1>{post.fields.title}</h1>
         <p
           style={{
             display: `block`,
@@ -23,7 +23,7 @@ class BlogPostTemplate extends React.Component {
             marginTop: `1rem`,
           }}
         >
-          {post.frontmatter.date}
+          {post.fields.date}
         </p>
         <p
           style={{
@@ -41,7 +41,7 @@ class BlogPostTemplate extends React.Component {
             marginTop: `1rem`,
           }}
         >
-          {post.frontmatter.tags}
+          {post.fields.tags}
         </p>
         <MDXRenderer>{post.code.body}</MDXRenderer>
         <hr
@@ -61,15 +61,15 @@ class BlogPostTemplate extends React.Component {
         >
           <li>
             {previous && (
-              <Link to={`/blog/${previous.frontmatter.slug}`} rel="prev">
-                ← {previous.frontmatter.title}
+              <Link to={previous.fields.postUrl} rel="prev">
+                ← {previous.fields.title}
               </Link>
             )}
           </li>
           <li>
             {next && (
-              <Link to={`/blog/${next.frontmatter.slug}`} rel="next">
-                {next.frontmatter.title} →
+              <Link to={next.fields.postUrl} rel="next">
+                {next.fields.title} →
               </Link>
             )}
           </li>
@@ -92,9 +92,11 @@ export const pageQuery = graphql`
     mdx(fields: { filePath: { eq: $filePath } }) {
       id
       excerpt(pruneLength: 160)
-      frontmatter {
+      fields {
         title
         date(formatString: "MMMM DD, YYYY")
+        tags
+        postUrl
       }
       code {
         body

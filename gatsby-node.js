@@ -24,13 +24,18 @@ exports.createPages = ({ graphql, actions }) => {
             node {
               id
               fields {
+                id
                 filePath
-                date
+                postUrl
                 published
+                date
+                title
+                categories
+                tags
+                keywords
+                description
               }
               frontmatter {
-                title
-                date
                 slug
               }
               code {
@@ -54,7 +59,7 @@ exports.createPages = ({ graphql, actions }) => {
       const next = index === 0 ? null : posts[index - 1].node
 
       createPage({
-        path: `/blog${post.node.frontmatter.slug}`,
+        path: post.node.fields.postUrl,
         component: blogPostTemplate,
         context: {
           filePath: post.node.fields.filePath,
@@ -88,7 +93,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     })
 
     createNodeField({
-      name: `slug`,
+      name: `postUrl`,
       node,
       value: `/blog${node.frontmatter.slug}`,
     })
@@ -103,6 +108,36 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       name: `date`,
       node,
       value: node.frontmatter.date ? node.frontmatter.date.split(' ')[0] : '',
+    })
+
+    createNodeField({
+      name: `title`,
+      node,
+      value: node.frontmatter.title || '',
+    })
+
+    createNodeField({
+      name: `categories`,
+      node,
+      value: node.frontmatter.categories || [],
+    })
+
+    createNodeField({
+      name: `tags`,
+      node,
+      value: node.frontmatter.tags || [],
+    })
+
+    createNodeField({
+      name: `keywords`,
+      node,
+      value: node.frontmatter.keywords || [],
+    })
+
+    createNodeField({
+      name: `description`,
+      node,
+      value: node.frontmatter.description || '',
     })
   }
 }
