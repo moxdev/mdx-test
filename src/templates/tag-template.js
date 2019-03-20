@@ -1,40 +1,38 @@
 import React from "react"
 import PropTypes from "prop-types"
-
-// Components
 import { Link, graphql } from "gatsby"
 
-const Tags = ({ pageContext, data }) => {
+import Layout from '../components/layout'
+import SEO from '../components/seo'
+
+const TagPage = ({ pageContext, data }) => {
   const { tag } = pageContext
-  const { edges, totalCount } = data.allMarkdownRemark
+  const { edges, totalCount } = data.allMdx
   const tagHeader = `${totalCount} post${
     totalCount === 1 ? "" : "s"
     } tagged with "${tag}"`
 
   return (
-    <div>
+    <Layout>
+      <SEO title={`Tag: ${tag}`}/>
       <h1>{tagHeader}</h1>
       <ul>
         {edges.map(({ node }) => {
-          const { slug } = node.fields
-          const { title } = node.frontmatter
+          const { id, title, postUrl } = node.fields
           return (
-            <li key={slug}>
-              <Link to={slug}>{title}</Link>
+            <li key={id}>
+              <Link to={postUrl}>{title}</Link>
             </li>
           )
         })}
       </ul>
-      {/*
-              This links to a page that does not yet exist.
-              We'll come back to it!
-            */}
+
       <Link to="/tags">All tags</Link>
-    </div>
+    </Layout>
   )
 }
 
-Tags.propTypes = {
+TagPage.propTypes = {
   pageContext: PropTypes.shape({
     tag: PropTypes.string.isRequired,
   }),
@@ -62,14 +60,16 @@ export const pageQuery = graphql`
     allMdx(
       limit: 2000
       sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { tags: { in: [$tag] } } }
+      filter: { fields: { tags: { in: [$tag] } } }
     ) {
       totalCount
       edges {
         node {
           fields {
+            id
             tags
             title
+            postUrl
           }
         }
       }
@@ -77,4 +77,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default Tags
+export default TagPage

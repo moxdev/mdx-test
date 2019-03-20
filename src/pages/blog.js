@@ -4,7 +4,7 @@ import { Link, graphql } from 'gatsby'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
 
-const BlogIndex = ({ data }) => {
+const BlogPage = ({ data }) => {
   const siteTitle = data.site.siteMetadata.title
   const { edges: posts } = data.allMdx
 
@@ -38,7 +38,7 @@ const BlogIndex = ({ data }) => {
 }
 
 export const pageQuery = graphql`
-  query blogIndex {
+  query blogPage {
     site {
       siteMetadata {
         title
@@ -58,4 +58,4 @@ export const pageQuery = graphql`
     }
   }
 `
-export default BlogIndex
+export default BlogPage
