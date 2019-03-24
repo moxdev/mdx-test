@@ -14,6 +14,10 @@ const BlogPage = ({ data }) => {
         title="All posts"
         keywords={[`blog`, `gatsby`, `javascript`, `react`]}
       />
+      <div>
+        <Link to="/tags">All tags</Link>
+        <Link to="/categories">All cats</Link>
+      </div>
 
       {posts.map(({ node }) => {
         const title = node.fields.title
